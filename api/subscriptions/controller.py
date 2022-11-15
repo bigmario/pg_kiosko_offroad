@@ -78,6 +78,23 @@ async def get_all_subscriptions(
 
 
 #############################
+# SELECT RANDOM SUBSCRIPTION
+#############################
+@subscription_router.get(
+    path="/subscription/winner",
+    status_code=status.HTTP_200_OK,
+    summary="Get Winner Subscription",
+    response_model_exclude_unset=True,
+)
+@remove_422
+async def get_winner_subscription(
+    subscription_service: SubscriptionService = Depends(),
+):
+    winner_subscription = await subscription_service.get_winner_subscription()
+    return winner_subscription
+
+
+#############################
 # GET ONE SUBSCRIPTION BY ID
 #############################
 @subscription_router.get(
@@ -124,7 +141,7 @@ async def delete_subscription(
 
 
 #############################
-# GET ONE SUBSCRIPTION BY ID
+# GET PDF BY SUBSCRIPTION ID
 #############################
 @subscription_router.get(
     path="/subscription/pdf/{id}",
