@@ -14,10 +14,7 @@ from api.utils.remove_422 import remove_422
 
 app = FastAPI()
 
-origins = [
-    "http://localhost",
-    "http://localhost:8000",
-]
+origins = ["*"]
 
 app.add_middleware(
     CORSMiddleware,
