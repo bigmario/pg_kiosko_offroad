@@ -9,7 +9,6 @@ from fastapi import (
     HTTPException,
     Depends,
 )
-
 from fastapi_pagination import Page, paginate
 
 from api.error_handlers.schemas.bad_gateway import BadGatewayError
@@ -159,4 +158,4 @@ async def get_pdf_subscription(
     id: PydanticObjectId = Path(...),
     subscription_service: SubscriptionService = Depends(),
 ):
-    await subscription_service.get_pdf_subscription(id)
+    return await subscription_service.get_pdf_subscription(id)

@@ -6,7 +6,7 @@ from typing import List
 from beanie import PydanticObjectId
 from beanie.operators import Or
 from fastapi import Body, HTTPException, status
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, FileResponse
 from fastapi_pagination import Page, paginate
 
 from api.subscriptions.schemas.subscriptions import Subscription
@@ -47,6 +47,8 @@ class SubscriptionService:
 
         pdf.output(ruta + "/table_with_cells.pdf")
 
+        return ruta + "/table_with_cells.pdf"
+
     async def subscribe(self, body: Subscription = Body(...)):
         existing_sub = await Subscription.find_one(Subscription.mail == body.mail)
 
@@ -75,7 +77,12 @@ class SubscriptionService:
 
     async def get_pdf_subscription(self, id: PydanticObjectId):
         subscriber_data = await self.get_one_subscription(id)
-        await self.pdf(subscriber_data.name, subscriber_data.id)
+        pdf = await self.pdf(subscriber_data.name, subscriber_data.id)
+        return FileResponse(
+            pdf,
+            media_type="application/octet-stream",
+            content_disposition_type="inline",
+        )
 
     async def get_winner_subscription(self):
         subscriptions = await self.get_all_subscriptions()
