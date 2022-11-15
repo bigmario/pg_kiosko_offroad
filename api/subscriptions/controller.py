@@ -22,7 +22,7 @@ from .service.subscription_service import SubscriptionService
 
 from config import Settings
 
-global_settings = Settings()
+conf = Settings()
 
 ########################
 # Subscription Router
@@ -54,7 +54,7 @@ async def subscribe(
     """
     Subscribe:
     """
-    if token == global_settings.secret:
+    if token == conf.secret:
         return await subscription_service.subscribe(body)
     else:
         raise HTTPException(
