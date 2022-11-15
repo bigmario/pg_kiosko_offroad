@@ -155,9 +155,9 @@ async def get_pdf_subscription(
     id: PydanticObjectId = Path(...),
     subscription_service: SubscriptionService = Depends(),
 ):
-    subscription = await subscription_service.get_pdf_subscription(id)
-    if subscription:
-        return subscription
+    pdf = await subscription_service.get_pdf_subscription(id)
+    if pdf:
+        return pdf
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Subscription not found!"
