@@ -121,3 +121,27 @@ async def delete_subscription(
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail=f"Subscription not found!"
         )
+
+
+#############################
+# GET ONE SUBSCRIPTION BY ID
+#############################
+@subscription_router.get(
+    path="/subscription/pdf/{id}",
+    status_code=status.HTTP_200_OK,
+    summary="Get PDF By Subscription ID",
+    response_model=Subscription,
+    response_model_exclude_unset=True,
+)
+@remove_422
+async def get_pdf_subscription(
+    id: PydanticObjectId = Path(...),
+    subscription_service: SubscriptionService = Depends(),
+):
+    subscription = await subscription_service.get_pdf_subscription(id)
+    if subscription:
+        return subscription
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Subscription not found!"
+        )

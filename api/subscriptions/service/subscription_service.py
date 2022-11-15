@@ -34,3 +34,8 @@ class SubscriptionService:
         sub = await Subscription.get(id)
         await sub.delete()
         return {"message": "Subscription deleted successfully"}
+
+    async def get_pdf_subscription(self, id: PydanticObjectId):
+        subscriber_data = self.get_one_subscription(id)
+        return subscriber_data
+        # con subscriber_data se alimenta el metodo de generar pdf
