@@ -2,7 +2,7 @@ from typing import List
 from beanie import PydanticObjectId
 from fastapi import (
     APIRouter,
-    BackgroundTasks,
+    Header,
     Body,
     status,
     Path,
@@ -20,6 +20,9 @@ from api.utils.remove_422 import remove_422
 from .schemas.subscriptions import Subscription
 from .service.subscription_service import SubscriptionService
 
+from config import Settings
+
+global_settings = Settings()
 
 ########################
 # Subscription Router
@@ -45,15 +48,18 @@ subscription_router = APIRouter(
 @remove_422
 async def subscribe(
     body: Subscription = Body(...),
+    token: str = Header(),
     subscription_service: SubscriptionService = Depends(),
 ):
     """
     Subscribe:
     """
-    try:
+    if token == global_settings.secret:
         return await subscription_service.subscribe(body)
-    except Exception as e:
-        return f"An exception occurred: {e}"
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST, detail="Unauthorized!"
+        )
 
 
 ########################
