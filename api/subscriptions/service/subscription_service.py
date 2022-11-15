@@ -53,11 +53,9 @@ class SubscriptionService:
         existing_sub = await Subscription.find_one(Subscription.mail == body.mail)
 
         if not existing_sub:
-            await body.create()
-            return JSONResponse(
-                {"Message": "Subscribed!!"},
-                status_code=status.HTTP_201_CREATED,
-            )
+            subscription = await body.create()
+            ticket = await self.get_pdf_subscription(subscription.id)
+            return ticket
         else:
             return JSONResponse(
                 {"Message": "Duplicate Email!!"},

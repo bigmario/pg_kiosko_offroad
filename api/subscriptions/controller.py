@@ -126,23 +126,23 @@ async def get_one_subscription(
 #############################
 # DELETE SUBSCRIPTION BY ID
 #############################
-@subscription_router.delete(
-    path="/subscription/{id}",
-    status_code=status.HTTP_200_OK,
-    summary="Delete One Subscription By ID",
-    response_model_exclude_unset=True,
-)
-@remove_422
-async def delete_subscription(
-    id: PydanticObjectId = Path(...),
-    subscription_service: SubscriptionService = Depends(),
-) -> dict:
-    try:
-        return await subscription_service.delete_subscription(id)
-    except Exception:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail=f"Subscription not found!"
-        )
+# @subscription_router.delete(
+#     path="/subscription/{id}",
+#     status_code=status.HTTP_200_OK,
+#     summary="Delete One Subscription By ID",
+#     response_model_exclude_unset=True,
+# )
+# @remove_422
+# async def delete_subscription(
+#     id: PydanticObjectId = Path(...),
+#     subscription_service: SubscriptionService = Depends(),
+# ) -> dict:
+#     try:
+#         return await subscription_service.delete_subscription(id)
+#     except Exception:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND, detail=f"Subscription not found!"
+#         )
 
 
 #############################
