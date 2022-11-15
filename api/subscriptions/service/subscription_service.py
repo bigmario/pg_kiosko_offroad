@@ -75,7 +75,7 @@ class SubscriptionService:
 
     async def get_pdf_subscription(self, id: PydanticObjectId):
         subscriber_data = await self.get_one_subscription(id)
-        await self.pdf(subscriber_data.name, subscriber_data.phone)
+        await self.pdf(subscriber_data.name, subscriber_data.id)
 
     async def get_winner_subscription(self):
         subscriptions = await self.get_all_subscriptions()
