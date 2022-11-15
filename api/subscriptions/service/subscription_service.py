@@ -1,6 +1,7 @@
 import os
 from typing import List
 from beanie import PydanticObjectId
+from beanie.operators import Or
 from fastapi import Body, HTTPException, status
 from fastapi.responses import JSONResponse
 
@@ -14,11 +15,13 @@ class SubscriptionService:
         if not existing_sub:
             await body.create()
             return JSONResponse(
-                {"Message": "Subscribed!!"}, status_code=status.HTTP_201_CREATED
+                {"Message": "Subscribed!!"},
+                status_code=status.HTTP_201_CREATED,
             )
         else:
             return JSONResponse(
-                {"Message": "Existing Email!!"}, status_code=status.HTTP_400_BAD_REQUEST
+                {"Message": "Duplicate Email!!"},
+                status_code=status.HTTP_400_BAD_REQUEST,
             )
 
     async def get_all_subscriptions(self) -> List[Subscription]:

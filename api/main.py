@@ -2,10 +2,10 @@ from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 
+from fastapi_pagination import add_pagination
+
 
 from api.core.database import init_db
-from api.mail.controller import email_router
-from api.sms.controller import sms_router
 from api.subscriptions.controller import subscription_router
 
 
@@ -44,3 +44,6 @@ async def index():
             "Message": "Subscribe to Mailing List!!",
         }
     )
+
+
+add_pagination(app)

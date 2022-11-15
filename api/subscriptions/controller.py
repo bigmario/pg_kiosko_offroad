@@ -10,6 +10,8 @@ from fastapi import (
     Depends,
 )
 
+from fastapi_pagination import Page, paginate
+
 from api.error_handlers.schemas.bad_gateway import BadGatewayError
 from api.error_handlers.schemas.not_found import NotFoundError
 from api.error_handlers.schemas.unauthorized import UnauthorizedError
@@ -61,15 +63,16 @@ async def subscribe(
     path="/subscription",
     status_code=status.HTTP_200_OK,
     summary="Get All Subscriptions",
-    response_model=List[Subscription],
+    response_model=Page[Subscription],
     response_model_exclude_unset=True,
 )
 @remove_422
 async def get_all_subscriptions(
     subscription_service: SubscriptionService = Depends(),
-) -> List[Subscription]:
+) -> Page[Subscription]:
     try:
-        return await subscription_service.get_all_subscriptions()
+        subscriptions = await subscription_service.get_all_subscriptions()
+        return paginate(subscriptions)
     except Exception as e:
         return f"An exception occurred: {e}"
 

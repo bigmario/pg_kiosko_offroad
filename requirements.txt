@@ -7,3 +7,4 @@ email-validator
 fastapi-mail
 gunicorn
 beanie
+fastapi-pagination

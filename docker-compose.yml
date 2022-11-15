@@ -23,12 +23,10 @@ services:
     networks:
       - main-network
     volumes:
-      - api:/code
+      - .:/code
   
 volumes:
   mongo-db:
-    driver: local
-  api:
     driver: local
 
 networks:
