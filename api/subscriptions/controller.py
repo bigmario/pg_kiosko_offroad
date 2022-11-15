@@ -20,7 +20,7 @@ from api.utils.remove_422 import remove_422
 from .schemas.subscriptions import Subscription
 from .service.subscription_service import SubscriptionService
 
-from config import Settings
+from .config import Settings
 
 conf = Settings()
 

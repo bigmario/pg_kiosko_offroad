@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     mongo_root_password: str
     mongo_db_host: str
     mongo_db_port: int
-    secret: str
 
     class Config:
         env_file = ".env"
