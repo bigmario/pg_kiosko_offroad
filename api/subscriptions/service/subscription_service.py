@@ -50,7 +50,7 @@ class SubscriptionService:
         return ruta + "/table_with_cells.pdf"
 
     async def subscribe(self, body: Subscription = Body(...)):
-        existing_sub = await Subscription.find_one(Subscription.mail == body.mail)
+        existing_sub = await Subscription.find_one(Subscription.mail == body.cedula)
 
         if not existing_sub:
             subscription = await body.create()
@@ -58,7 +58,7 @@ class SubscriptionService:
             return ticket
         else:
             return JSONResponse(
-                {"Message": "Duplicate Email!!"},
+                {"Message": "Este participante ya está registrado!!"},
                 status_code=status.HTTP_400_BAD_REQUEST,
             )
 
