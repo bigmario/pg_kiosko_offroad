@@ -20,12 +20,12 @@ class SubscriptionService:
             def header(self):
 
                 self.ln(10)
-                self.image(rImageP, x=70, y=-5, w=75, h=75)
-                self.ln(5)
+                self.image(rImageP, x=65, y=-5, w=90, h=90)
+                self.ln(15)
 
-                self.image(rImageS, x=92, y=118, w=30, h=30)
+                self.image(rImageS, x=92, y=130, w=30, h=30)
 
-                self.ln(22)
+                self.ln(24)
                 self.set_font("helvetica", "", 23)
                 # Move to the right
                 self.cell(20)
