@@ -11,7 +11,7 @@ from fastapi_pagination import Page, paginate
 from api.subscriptions.schemas.subscriptions import Subscription
 
 rImageP = f"{os.getcwd()}/api/subscriptions/image/LOGO-POS-GLOBAL-PNG.png"
-rImageS = f"{os.getcwd()}/api/subscriptions/image/sunmi.png"
+rImageS = f"{os.getcwd()}/api/subscriptions/image/sunmi_logo.jpeg"
 
 
 class SubscriptionService:
@@ -26,7 +26,7 @@ class SubscriptionService:
                 self.image(rImageS, x=92, y=118, w=30, h=30)
 
                 self.ln(22)
-                self.set_font("helvetica", "B", 15)
+                self.set_font("helvetica", "B", 16)
                 # Move to the right
                 self.cell(20)
 
@@ -35,7 +35,7 @@ class SubscriptionService:
                 self.multi_cell(
                     w=150,
                     h=10,
-                    txt=f'"Felicidades, estas participando!!!"\n Tu Numero:{sliced_number[-8:]}',
+                    txt=f"¡Felicidades, estás participando!\n Tu Número:{sliced_number[-8:]}",
                     border=0,
                     align="C",
                     fill=0,
@@ -55,7 +55,7 @@ class SubscriptionService:
                 self.ln()
                 self.cell(20)
 
-                self.set_font("helvetica", "B", 13)
+                self.set_font("helvetica", "B", 15)
                 self.cell(
                     w=150, h=10, txt=f"C.I: {cedula} ", border=0, align="C", fill=0
                 )
@@ -66,7 +66,7 @@ class SubscriptionService:
                 self.cell(
                     w=150,
                     h=10,
-                    txt=f"Telefono: {telefono}",
+                    txt=f"Teléfono: {telefono}",
                     border=0,
                     align="C",
                     fill=0,
@@ -79,8 +79,8 @@ class SubscriptionService:
                 )
 
                 self.ln(33)
-                self.cell(72)
-                self.set_font("helvetica", "B", 8)
+                self.cell(67)
+                self.set_font("helvetica", "B", 10)
                 self.multi_cell(w=150, h=10, txt="Powered By Sunmi Corporation, C.A.")
                 self.ln(5)
 
