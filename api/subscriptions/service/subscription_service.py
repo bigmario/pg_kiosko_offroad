@@ -96,7 +96,7 @@ class SubscriptionService:
         return ruta + "/ticket.pdf"
 
     async def subscribe(self, body: Subscription = Body(...)):
-        existing_sub = await Subscription.find_one(Subscription.mail == body.cedula)
+        existing_sub = await Subscription.find_one(Subscription.cedula == body.cedula)
 
         if not existing_sub:
             subscription = await body.create()
