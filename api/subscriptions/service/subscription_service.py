@@ -45,16 +45,17 @@ class SubscriptionService:
         ruta = f"{os.getcwd()}/pdf"
         os.makedirs(ruta, exist_ok=True)
 
-        pdf.output(ruta + "/table_with_cells.pdf")
+        pdf.output(ruta + "/ticket.pdf")
 
-        return ruta + "/table_with_cells.pdf"
+        return ruta + "/ticket.pdf"
 
     async def subscribe(self, body: Subscription = Body(...)):
         existing_sub = await Subscription.find_one(Subscription.mail == body.cedula)
 
         if not existing_sub:
             subscription = await body.create()
-            await self.get_pdf_subscription(subscription.cedula)
+            pdf = await self.get_pdf_subscription(subscription.cedula)
+            return pdf
         else:
             return JSONResponse(
                 {"Message": "Este participante ya está registrado!!"},
