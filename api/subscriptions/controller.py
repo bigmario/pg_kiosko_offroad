@@ -103,23 +103,23 @@ async def get_winner_subscription(
 # GET ONE SUBSCRIPTION BY ID
 #############################
 @subscription_router.get(
-    path="/subscription/{id}",
+    path="/subscription/{cedula}",
     status_code=status.HTTP_200_OK,
-    summary="Get One Subscription By ID",
+    summary="Get One Subscription By Cedula",
     response_model=Subscription,
     response_model_exclude_unset=True,
 )
 @remove_422
 async def get_one_subscription(
-    id: PydanticObjectId = Path(...),
+    cedula: str = Path(...),
     subscription_service: SubscriptionService = Depends(),
 ) -> Subscription:
-    subscription = await subscription_service.get_one_subscription(id)
+    subscription = await subscription_service.get_one_subscription(cedula)
     if subscription:
         return subscription
     else:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Subscription not found!"
+            status_code=status.HTTP_404_NOT_FOUND, detail="Participante no encontrado!"
         )
 
 
@@ -149,13 +149,13 @@ async def get_one_subscription(
 # GET PDF BY SUBSCRIPTION ID
 #############################
 @subscription_router.get(
-    path="/subscription/pdf/{id}",
+    path="/subscription/pdf/{cedula}",
     status_code=status.HTTP_200_OK,
     summary="Get PDF By Subscription ID",
 )
 @remove_422
 async def get_pdf_subscription(
-    id: PydanticObjectId = Path(...),
+    cedula: str = Path(...),
     subscription_service: SubscriptionService = Depends(),
 ):
-    return await subscription_service.get_pdf_subscription(id)
+    return await subscription_service.get_pdf_subscription(cedula)

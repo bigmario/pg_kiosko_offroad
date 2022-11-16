@@ -65,16 +65,16 @@ class SubscriptionService:
     async def get_all_subscriptions(self) -> Page[Subscription]:
         return await Subscription.find_all().to_list()
 
-    async def get_one_subscription(self, id: PydanticObjectId) -> Subscription:
-        return await Subscription.get(id)
+    async def get_one_subscription(self, cedula: str) -> Subscription:
+        return await Subscription.find_one(Subscription.cedula == cedula)
 
     async def delete_subscription(self, id: PydanticObjectId) -> dict:
         sub = await Subscription.get(id)
         await sub.delete()
         return {"message": "Subscription deleted successfully"}
 
-    async def get_pdf_subscription(self, id: PydanticObjectId):
-        subscriber_data = await self.get_one_subscription(id)
+    async def get_pdf_subscription(self, cedula: str):
+        subscriber_data = await self.get_one_subscription(cedula)
         pdf = await self.pdf(subscriber_data.name, subscriber_data.id)
         return FileResponse(
             pdf,
