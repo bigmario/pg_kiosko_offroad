@@ -9,6 +9,7 @@ from fastapi import (
     HTTPException,
     Depends,
 )
+from fastapi.responses import FileResponse
 from fastapi_pagination import Page, paginate
 
 from api.error_handlers.schemas.bad_gateway import BadGatewayError
@@ -42,6 +43,7 @@ subscription_router = APIRouter(
     path="/subscription",
     status_code=status.HTTP_201_CREATED,
     summary="Subscribe",
+    response_class=FileResponse,
     response_model_exclude_unset=True,
 )
 @remove_422
@@ -151,6 +153,7 @@ async def get_one_subscription(
 @subscription_router.get(
     path="/subscription/pdf/{cedula}",
     status_code=status.HTTP_200_OK,
+    response_class=FileResponse,
     summary="Get PDF By Subscription ID",
 )
 @remove_422

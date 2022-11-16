@@ -15,11 +15,11 @@ rImage = f"{os.getcwd()}/api/subscriptions/image/LOGO-POS-GLOBAL-PNG.png"
 
 
 class SubscriptionService:
-    async def pdf(self, name, number):
+    async def pdf(self, name, number, cedula):
         class PDF(FPDF):
             def header(self):
                 # Arial bold 15
-                self.image(rImage, x=10, y=-2, w=200, h=170)
+                self.image(rImage, x=21, y=10, w=170, h=170)
                 self.ln(22)
                 self.set_font("helvetica", "B", 10)
                 # Move to the right
@@ -29,7 +29,7 @@ class SubscriptionService:
                 self.multi_cell(
                     w=150,
                     h=10,
-                    txt=f'"Felicidades {name}, estas participando" \n Tu número: {number}',
+                    txt=f'"Felicidades {name}, C.I: {cedula}, estas participando" \n Tu número: {number}',
                     border=0,
                     align="C",
                     fill=0,
@@ -54,8 +54,7 @@ class SubscriptionService:
 
         if not existing_sub:
             subscription = await body.create()
-            ticket = await self.get_pdf_subscription(subscription.cedula)
-            return ticket
+            await self.get_pdf_subscription(subscription.cedula)
         else:
             return JSONResponse(
                 {"Message": "Este participante ya está registrado!!"},
@@ -75,12 +74,13 @@ class SubscriptionService:
 
     async def get_pdf_subscription(self, cedula: str):
         subscriber_data = await self.get_one_subscription(cedula)
-        print(subscriber_data)
-        pdf = await self.pdf(subscriber_data.name, subscriber_data.id)
+        pdf = await self.pdf(
+            subscriber_data.name, subscriber_data.id, subscriber_data.cedula
+        )
+        headers = {"Content-Disposition": "inline"}
         return FileResponse(
-            pdf,
-            media_type="application/octet-stream",
-            content_disposition_type="inline",
+            path=pdf,
+            headers=headers,
             filename="ticket.pdf",
         )
 
