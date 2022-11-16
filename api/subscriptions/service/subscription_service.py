@@ -80,6 +80,7 @@ class SubscriptionService:
             pdf,
             media_type="application/octet-stream",
             content_disposition_type="inline",
+            filename="ticket.pdf",
         )
 
     async def get_winner_subscription(self):
