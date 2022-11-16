@@ -4,38 +4,84 @@ from fpdf.enums import XPos, YPos
 import random
 from typing import List
 from beanie import PydanticObjectId
-from beanie.operators import Or
 from fastapi import Body, HTTPException, status
 from fastapi.responses import JSONResponse, FileResponse
 from fastapi_pagination import Page, paginate
 
 from api.subscriptions.schemas.subscriptions import Subscription
 
-rImage = f"{os.getcwd()}/api/subscriptions/image/LOGO-POS-GLOBAL-PNG.png"
+rImageP = f"{os.getcwd()}/api/subscriptions/image/LOGO-POS-GLOBAL-PNG.png"
+rImageS = f"{os.getcwd()}/api/subscriptions/image/sunmi.png"
 
 
 class SubscriptionService:
-    async def pdf(self, name, number, cedula):
+    async def pdf(self, name, number, cedula, apellido, telefono, correo):
         class PDF(FPDF):
             def header(self):
-                # Arial bold 15
-                self.image(rImage, x=21, y=10, w=170, h=170)
+
+                self.ln(10)
+                self.image(rImageP, x=70, y=-5, w=75, h=75)
+                self.ln(5)
+
+                self.image(rImageS, x=92, y=118, w=30, h=30)
+
                 self.ln(22)
-                self.set_font("helvetica", "B", 10)
+                self.set_font("helvetica", "B", 15)
                 # Move to the right
                 self.cell(20)
-                # marco
-                self.set_font("helvetica", "B", 16)
+
+                sliced_number = str(number)
+
                 self.multi_cell(
                     w=150,
                     h=10,
-                    txt=f'"Felicidades {name}, C.I: {cedula}, estas participando" \n Tu número: {number}',
+                    txt=f'"Felicidades, estas participando!!!"\n Tu Numero:{sliced_number[-8:]}',
                     border=0,
                     align="C",
                     fill=0,
                 )
-                self.cell(50)
-                self.set_font("helvetica", "", 10)
+
+                self.ln()
+                self.cell(20)
+                self.cell(
+                    w=150,
+                    h=10,
+                    txt=f"Nombre: {name} {apellido}",
+                    border=0,
+                    align="C",
+                    fill=0,
+                )
+
+                self.ln()
+                self.cell(20)
+
+                self.set_font("helvetica", "B", 13)
+                self.cell(
+                    w=150, h=10, txt=f"C.I: {cedula} ", border=0, align="C", fill=0
+                )
+
+                self.ln()
+                self.cell(20)
+
+                self.cell(
+                    w=150,
+                    h=10,
+                    txt=f"Telefono: {telefono}",
+                    border=0,
+                    align="C",
+                    fill=0,
+                )
+
+                self.ln()
+                self.cell(20)
+                self.cell(
+                    w=150, h=10, txt=f"Correo: {correo}", border=0, align="C", fill=0
+                )
+
+                self.ln(33)
+                self.cell(72)
+                self.set_font("helvetica", "B", 8)
+                self.multi_cell(w=150, h=10, txt="Powered By Sunmi Corporation, C.A.")
                 self.ln(5)
 
         pdf = PDF()
@@ -76,7 +122,12 @@ class SubscriptionService:
     async def get_pdf_subscription(self, cedula: str):
         subscriber_data = await self.get_one_subscription(cedula)
         pdf = await self.pdf(
-            subscriber_data.name, subscriber_data.id, subscriber_data.cedula
+            subscriber_data.name,
+            subscriber_data.id,
+            subscriber_data.cedula,
+            subscriber_data.last_name,
+            subscriber_data.phone,
+            subscriber_data.mail,
         )
         headers = {"Content-Disposition": "inline"}
         return FileResponse(
