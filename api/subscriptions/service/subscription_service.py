@@ -54,7 +54,7 @@ class SubscriptionService:
 
         if not existing_sub:
             subscription = await body.create()
-            ticket = await self.get_pdf_subscription(subscription.id)
+            ticket = await self.get_pdf_subscription(subscription.cedula)
             return ticket
         else:
             return JSONResponse(
@@ -75,6 +75,7 @@ class SubscriptionService:
 
     async def get_pdf_subscription(self, cedula: str):
         subscriber_data = await self.get_one_subscription(cedula)
+        print(subscriber_data)
         pdf = await self.pdf(subscriber_data.name, subscriber_data.id)
         return FileResponse(
             pdf,
