@@ -26,7 +26,7 @@ class SubscriptionService:
                 self.image(rImageS, x=92, y=118, w=30, h=30)
 
                 self.ln(22)
-                self.set_font("helvetica", "B", 16)
+                self.set_font("helvetica", "B", 21)
                 # Move to the right
                 self.cell(20)
 
@@ -55,7 +55,7 @@ class SubscriptionService:
                 self.ln()
                 self.cell(20)
 
-                self.set_font("helvetica", "B", 15)
+                self.set_font("helvetica", "B", 20)
                 self.cell(
                     w=150, h=10, txt=f"C.I: {cedula} ", border=0, align="C", fill=0
                 )
@@ -79,8 +79,8 @@ class SubscriptionService:
                 )
 
                 self.ln(33)
-                self.cell(67)
-                self.set_font("helvetica", "B", 10)
+                self.cell(59)
+                self.set_font("helvetica", "B", 12)
                 self.multi_cell(w=150, h=10, txt="Powered By Sunmi Corporation, C.A.")
                 self.ln(5)
 
