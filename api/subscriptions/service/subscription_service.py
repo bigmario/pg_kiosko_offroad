@@ -121,20 +121,26 @@ class SubscriptionService:
 
     async def get_pdf_subscription(self, cedula: str):
         subscriber_data = await self.get_one_subscription(cedula)
-        pdf = await self.pdf(
-            subscriber_data.name,
-            subscriber_data.id,
-            subscriber_data.cedula,
-            subscriber_data.last_name,
-            subscriber_data.phone,
-            subscriber_data.mail,
-        )
-        headers = {"Content-Disposition": "inline"}
-        return FileResponse(
-            path=pdf,
-            headers=headers,
-            filename="ticket.pdf",
-        )
+        if subscriber_data:
+            pdf = await self.pdf(
+                subscriber_data.name,
+                subscriber_data.id,
+                subscriber_data.cedula,
+                subscriber_data.last_name,
+                subscriber_data.phone,
+                subscriber_data.mail,
+            )
+            headers = {"Content-Disposition": "inline"}
+            return FileResponse(
+                path=pdf,
+                headers=headers,
+                filename="ticket.pdf",
+            )
+        else:
+            return JSONResponse(
+                {"Message": "Participante no encontrado!!"},
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
 
     async def get_winner_subscription(self):
         subscriptions = await self.get_all_subscriptions()
