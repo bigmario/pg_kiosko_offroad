@@ -138,5 +138,8 @@ class SubscriptionService:
 
     async def get_winner_subscription(self):
         subscriptions = await self.get_all_subscriptions()
-        num = random.randint(0, len(subscriptions) - 1)
-        return subscriptions[num]
+        if len(subscriptions) > 0:
+            num = random.randint(0, len(subscriptions) - 1)
+            return subscriptions[num]
+        else:
+            return {"message": "No subscriptions to sort"}
