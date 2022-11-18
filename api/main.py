@@ -15,7 +15,7 @@ from api.utils.remove_422 import remove_422
 app = FastAPI()
 
 origins = [
-    "138.59.11.117/32",
+    "*",
     "http://localhost",
     "http://localhost:8000",
 ]
