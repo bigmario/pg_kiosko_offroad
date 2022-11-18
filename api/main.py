@@ -14,11 +14,15 @@ from api.utils.remove_422 import remove_422
 
 app = FastAPI()
 
-origins = ["*"]
+origins = [
+    "138.59.11.117/32",
+    "http://localhost",
+    "http://localhost:8000",
+]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
