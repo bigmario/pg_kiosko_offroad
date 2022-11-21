@@ -9,3 +9,5 @@ gunicorn
 beanie
 fastapi-pagination
 fpdf2==2.5.5
+pandas
+openpyxl

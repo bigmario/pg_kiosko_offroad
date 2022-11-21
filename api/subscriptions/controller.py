@@ -84,6 +84,22 @@ async def get_all_subscriptions(
         return f"An exception occurred: {e}"
 
 
+#################################
+# GET ALL SUBSCRIPTIONS ON EXCEL
+#################################
+@subscription_router.get(
+    path="/subscription/excel",
+    status_code=status.HTTP_200_OK,
+    response_class=FileResponse,
+    summary="Get All Subscriptions on Excel",
+)
+@remove_422
+async def get_excel_subscriptions(
+    subscription_service: SubscriptionService = Depends(),
+):
+    return await subscription_service.get_excel_subscriptions()
+
+
 #############################
 # SELECT RANDOM SUBSCRIPTION
 #############################

@@ -1,4 +1,5 @@
 import os
+import pandas as pd
 from fpdf import FPDF
 from fpdf.enums import XPos, YPos
 import random
@@ -149,3 +150,28 @@ class SubscriptionService:
             return subscriptions[num]
         else:
             return {"message": "No subscriptions to sort"}
+
+    async def get_excel_subscriptions(self):
+        excel_file_path = (
+            f"{os.getcwd()}/api/subscriptions/excel_files/participantes.xlsx"
+        )
+
+        subscriptions = await self.get_all_subscriptions()
+
+        # convert pydantic objects to dict
+        subs = [item.dict() for item in subscriptions]
+
+        # convert into dataframe
+        df = pd.DataFrame(data=subs)
+
+        # convert into excel
+        df.to_excel(excel_file_path, index=False)
+
+        headers = {"Content-Disposition": "inline"}
+
+        return FileResponse(
+            path=excel_file_path,
+            headers=headers,
+            media_type="application/xlsx",
+            filename="participantes.xlsx",
+        )
